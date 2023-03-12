@@ -1,31 +1,37 @@
 import React, { useState } from "react";
 import "../styles/App.css";
 
-function ToDo({ task, setTodos }) {
-  const { id, createdAt } = task;
-  return (
-    <tr>
+function ToDo({ todos, setTodos }) {
+  const addInput = (e, i) => {
+    todos[i].value = e.target.value;
+    setTodos([...todos]);
+  };
+
+  return todos.map((task, i) => (
+    <tr key={i}>
       <td>
-        <p>{id}</p>
+        <p>{task.id}</p>
       </td>
       <td>
-        <input />
+        <input value={task.value} onChange={(e) => addInput(e, i)} />
       </td>
       <td>
-        <p>{createdAt}</p>
+        <p>{task.createdAt}</p>
       </td>
     </tr>
-  );
+  ));
 }
 
 function App() {
   const [todos, setTodos] = useState([
     {
       id: "todo1",
+      value: "",
       createdAt: "20:30",
     },
     {
       id: "todo2",
+      value: "",
       createdAt: "18:00",
     },
   ]);
@@ -43,9 +49,7 @@ function App() {
       <button onClick={reverseOrder}>Reverse</button>
       <table>
         <tbody>
-          {todos.map((task, i) => (
-            <ToDo task={task} setTodos={setTodos} key={i} />
-          ))}
+          <ToDo todos={todos} setTodos={setTodos} />
         </tbody>
       </table>
     </div>
